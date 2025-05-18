@@ -384,6 +384,11 @@ body{
     border: 1px solid #088178;
 
 }
+#sm-banner .banner-box2:hover button{
+    background-color: #088178;
+    border: 1px solid #088178;
+
+}
 
 #newsletter{
     display: flex;
