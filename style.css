@@ -871,3 +871,82 @@ footer .copyright{
     }
 }
 
+#cart-add {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 40px 80px;
+}
+
+#subtotal {
+    width: 50%;
+    margin-bottom: 30px;
+    border: 1px solid #e2e9e1;
+    padding: 30px;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+#subtotal h3 {
+    padding-bottom: 15px;
+    color: #088178;
+    font-size: 24px;
+}
+
+#subtotal table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#subtotal table td {
+    width: 50%;
+    border: 1px solid #e2e9e1;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#subtotal table tr:last-child td {
+    border-bottom: none;
+}
+
+#subtotal button {
+    background-color: #088178;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+#subtotal button:hover {
+    background-color: #066e67;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(8, 129, 120, 0.2);
+}
+
+@media (max-width: 799px) {
+    #subtotal {
+        width: 100%;
+    }
+}
+
+@media (max-width: 477px) {
+    #cart-add {
+        padding: 40px 20px;
+    }
+    
+    #subtotal {
+        padding: 20px;
+    }
+    
+    #subtotal table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
