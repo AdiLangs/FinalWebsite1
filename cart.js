@@ -1,4 +1,3 @@
-// Cart functionality
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL for backend requests
