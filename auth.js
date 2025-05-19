@@ -1,13 +1,35 @@
 // API base URL
-const API_BASE_URL = 'https://final-website1.vercel.app';
+const API_BASE_URL = 'http://localhost:3000';
 
 // Add debug logging function
 function debugLog(message, data = null) {
     console.log(`[Auth Debug] ${message}`, data || '');
 }
 
+// Test server connection
+async function testServerConnection() {
+    try {
+        debugLog('Testing server connection...');
+        const response = await fetch(`${API_BASE_URL}/health`);
+        const data = await response.json();
+        debugLog('Server health check response:', data);
+        return data.status === 'ok';
+    } catch (error) {
+        debugLog('Server connection test failed:', error);
+        return false;
+    }
+}
+
 // Check if user is already logged in
 async function checkAuth() {
+    // First test server connection
+    const isServerConnected = await testServerConnection();
+    if (!isServerConnected) {
+        debugLog('Server is not accessible');
+        alert('Unable to connect to the server. Please try again later.');
+        return;
+    }
+
     debugLog('Checking authentication status');
     const token = localStorage.getItem('token');
     if (token) {

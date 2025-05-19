@@ -13,6 +13,19 @@ console.log('Port:', process.env.PORT);
 
 const app = express();
 
+// Test endpoints
+app.get('/test', (req, res) => {
+    res.send('Server is accessible!');
+});
+
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    });
+});
+
 // Middleware
 app.use(cors({
     origin: '*', // Allow all origins temporarily for testing
