@@ -1,5 +1,5 @@
 // API base URL
-const API_BASE_URL = 'https://lalamig.vercel.app';
+const API_BASE_URL = 'https://finalwebsite1.onrender.com';
 
 // Add debug logging function
 function debugLog(message, data = null) {
