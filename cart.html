@@ -4,11 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lalamig Website</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
     <link rel="stylesheet" href="style.css">
-    
+    <style>
+        /* Responsive cart table for mobile */
+        @media (max-width: 900px) {
+            #cart table, #cart thead, #cart tbody, #cart th, #cart td, #cart tr {
+                display: block;
+            }
+            #cart thead tr {
+                display: none;
+            }
+            #cart tbody tr {
+                margin-bottom: 20px;
+                border-bottom: 1px solid #eee;
+            }
+            #cart td {
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+                min-height: 40px;
+                border: none;
+            }
+            #cart td:before {
+                position: absolute;
+                top: 0;
+                left: 10px;
+                width: 45%;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #088178;
+            }
+            #cart td:nth-child(1):before { content: 'Remove'; }
+            #cart td:nth-child(2):before { content: 'Image'; }
+            #cart td:nth-child(3):before { content: 'Product'; }
+            #cart td:nth-child(4):before { content: 'Price'; }
+            #cart td:nth-child(5):before { content: 'Quantity'; }
+            #cart td:nth-child(6):before { content: 'Subtotal'; }
+            #cart table img {
+                width: 50px;
+            }
+        }
+        @media (max-width: 600px) {
+            #cart-add {
+                padding: 10px;
+            }
+            #subtotal {
+                padding: 10px;
+            }
+            #subtotal table td {
+                font-size: 14px;
+                padding: 6px;
+            }
+            #subtotal h3 {
+                font-size: 18px;
+            }
+            #subtotal button {
+                font-size: 14px;
+                padding: 10px 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
