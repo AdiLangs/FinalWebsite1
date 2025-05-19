@@ -30,10 +30,11 @@ const userSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     items: [{
-        name: String,
-        price: Number,
-        quantity: Number,
-        image: String
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        price: { type: Number, required: true },
+        quantity: { type: Number, required: true },
+        image: { type: String, required: true }
     }],
     totalAmount: { type: Number, required: true },
     status: { type: String, default: 'pending' },
@@ -52,8 +53,23 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Verify email configuration
+transporter.verify(function(error, success) {
+    if (error) {
+        console.error('Email configuration error:', error);
+    } else {
+        console.log('Email server is ready to send messages');
+    }
+});
+
 // Function to send order confirmation email
 async function sendOrderConfirmationEmail(userEmail, orderDetails) {
+    console.log('Attempting to send email to:', userEmail);
+    console.log('Email configuration:', {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS ? 'Password is set' : 'Password is missing'
+    });
+
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: userEmail,
@@ -86,10 +102,18 @@ async function sendOrderConfirmationEmail(userEmail, orderDetails) {
     };
 
     try {
-        await transporter.sendMail(mailOptions);
-        console.log('Order confirmation email sent to:', userEmail);
+        console.log('Sending email with options:', {
+            from: mailOptions.from,
+            to: mailOptions.to,
+            subject: mailOptions.subject
+        });
+        
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully:', info.response);
+        return true;
     } catch (error) {
         console.error('Error sending email:', error);
+        throw error;
     }
 }
 
@@ -248,7 +272,20 @@ app.get('/api/debug/users', async (req, res) => {
 // Process Order Route
 app.post('/api/orders', auth, async (req, res) => {
     try {
+        console.log('Received order request from user:', req.user.email);
         const { items, totalAmount } = req.body;
+        
+        if (!items || !Array.isArray(items) || items.length === 0) {
+            console.error('Invalid order items:', items);
+            return res.status(400).json({ message: 'Invalid order items' });
+        }
+
+        if (!totalAmount || typeof totalAmount !== 'number' || totalAmount <= 0) {
+            console.error('Invalid total amount:', totalAmount);
+            return res.status(400).json({ message: 'Invalid total amount' });
+        }
+
+        console.log('Creating new order with items:', items);
         
         // Create new order
         const order = new Order({
@@ -258,9 +295,17 @@ app.post('/api/orders', auth, async (req, res) => {
         });
 
         await order.save();
+        console.log('Order saved successfully:', order._id);
 
         // Send confirmation email
-        await sendOrderConfirmationEmail(req.user.email, order);
+        try {
+            console.log('Attempting to send order confirmation email...');
+            await sendOrderConfirmationEmail(req.user.email, order);
+            console.log('Order confirmation email sent successfully');
+        } catch (emailError) {
+            console.error('Error sending confirmation email:', emailError);
+            // Don't fail the order if email fails
+        }
 
         res.status(201).json({ 
             message: 'Order placed successfully',
@@ -268,7 +313,10 @@ app.post('/api/orders', auth, async (req, res) => {
         });
     } catch (error) {
         console.error('Error processing order:', error);
-        res.status(500).json({ message: 'Error processing order', error: error.message });
+        res.status(500).json({ 
+            message: 'Error processing order', 
+            error: error.message 
+        });
     }
 });
 

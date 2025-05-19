@@ -6,14 +6,14 @@ function addToCart(product) {
     const existingItem = cart.find(item => item.id === product.id);
     
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += product.quantity;
     } else {
         cart.push({
             id: product.id,
             name: product.name,
             price: product.price,
             image: product.image,
-            quantity: 1
+            quantity: product.quantity
         });
     }
     
@@ -48,10 +48,12 @@ function updateCartDisplay() {
 
     cartTable.innerHTML = '';
     let total = 0;
+    let itemCount = 0;
     
     cart.forEach(item => {
         const subtotal = item.price * item.quantity;
         total += subtotal;
+        itemCount += item.quantity;
         const row = document.createElement('tr');
         row.innerHTML = `
             <td><a href="#" onclick="removeFromCart('${item.id}')"><i class="fas fa-times-circle"></i></a></td>
@@ -64,12 +66,19 @@ function updateCartDisplay() {
         cartTable.appendChild(row);
     });
 
+    // Calculate shipping cost (₱500 for every 2 items)
+    const shippingCost = Math.ceil(itemCount / 2) * 500;
+    const finalTotal = total + shippingCost;
+
     // Update totals
     const subtotalElement = document.getElementById('cart-subtotal');
+    const shippingElement = document.getElementById('cart-shipping');
     const totalElement = document.getElementById('cart-total');
-    if (subtotalElement && totalElement) {
+    
+    if (subtotalElement && shippingElement && totalElement) {
         subtotalElement.textContent = `₱ ${total.toFixed(2)}`;
-        totalElement.textContent = `₱ ${total.toFixed(2)}`;
+        shippingElement.textContent = `₱ ${shippingCost.toFixed(2)}`;
+        totalElement.textContent = `₱ ${finalTotal.toFixed(2)}`;
     }
 }
 
@@ -90,19 +99,38 @@ async function saveOrder() {
     }
 
     const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    console.log('Attempting to save order:', { items: cartItems, totalAmount });
 
     try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        // Format items to match schema
+        const formattedItems = cartItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image
+        }));
+
+        console.log('Sending order to server...');
         const response = await fetch('http://localhost:3000/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                items: cartItems,
+                items: formattedItems,
                 totalAmount
             })
         });
+
+        const data = await response.json();
+        console.log('Server response:', data);
 
         if (response.ok) {
             // Clear cart after successful order
@@ -110,11 +138,11 @@ async function saveOrder() {
             alert('Order placed successfully!');
             window.location.href = 'homepage.html';
         } else {
-            throw new Error('Failed to place order');
+            throw new Error(data.message || 'Failed to place order');
         }
     } catch (error) {
         console.error('Error saving order:', error);
-        alert('Failed to place order. Please try again.');
+        alert(`Failed to place order: ${error.message}`);
     }
 }
 

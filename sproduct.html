@@ -35,43 +35,45 @@
 
     <section id="prodetails" class="section-p1">
         <div class="single-pro-image">
-            <img src=" " width="100%" id="MainImg" alt="">
+            <img src="img/aircon/ac1.png" width="668px" height="668px" id="MainImg" alt="">
             <div class="small-image-group">
                 <div class="small-image-col">
-                    <img src="img/products/aircon1.jpg" width="100%" class="small-image" alt="" >
+                    <img src="img/aircon/ac1.2.png" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/products/aircon1.jpg" width="100%" class="small-image" alt="" >
+                    <img src="img/aircon/ac1.4.png" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/products/aircon1.jpg" width="100%" class="small-image" alt="" >
+                    <img src="img/aircon/ac1.3.png" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/products/aircon1.jpg" width="100%" class="small-image" alt="" >
+                    <img src="img/aircon/ac1.4.png" width="150px" height="150px" class="small-image" alt="" >
                 </div>
             </div>
         </div>
         <div class="single-pro-details">
             <h6>Home / Aircon</h6>
-            <h4>Product Name</h4>
-            <h2>₱ 20,000.00</h2>
-            <select>
-                <option>Select Option</option>
-                <option>Select Option</option>
-                <option>Select Option</option>
-                <option>Select Option</option>
-                <option>Select Option</option>
+            <h4>INVERTER AIRCON WALL-TYPE UNIT R32</h4>
+            <h2 id="product-price">₱ 29,000.00</h2>
+            <select id="hp-select" onchange="updatePrice()">
+                <option value="1">1 hp</option>
+                <option value="2">2 hp</option>
+                <option value="3">3 hp</option>
             </select>
-            <input type="number" value="1" id="quantity">
+            <input type="number" value="1" id="quantity" min="1">
             <button class="normal" onclick="addToCart({
-                id: 'product1',
-                name: 'Product Name',
-                price: 20000.00,
-                image: 'img/products/aircon1.jpg',
-                quantity: parseInt(document.getElementById('quantity').value)
+                id: 'product1-' + document.getElementById('hp-select').value,
+                name: 'Product Name (' + document.getElementById('hp-select').value + ' HP)',
+                price: getCurrentPrice(),
+                image: 'img/aircon/ac1.png',
+                quantity: parseInt(document.getElementById('quantity').value) || 1
             })">Add to Cart</button>
             <h4>Product Details</h4>
-            <span>HEllo
+            <span><li>INCLUDED</li>
+            <li>FREE 10 FEET COPPER TUBE</li>
+            <li>FREE 10 FEET COMMUNICATION WIRE</li>
+            <li>FREE 1 PC. PVC DRAIN</li>
+            <li>METAL SUPPORT BRACKETOUTDOOR STAND</li> 
             </span>
         </div>
 
@@ -235,6 +237,38 @@
             MainImg.src = smallimg[3].src;
         }
 
+        // Function to update price based on HP selection
+        function updatePrice() {
+            const hpSelect = document.getElementById('hp-select');
+            const priceElement = document.getElementById('product-price');
+            const selectedHP = hpSelect.value;
+            
+            let price = 29000; // Base price for 1 HP
+            
+            if (selectedHP === '2') {
+                price = 31000;
+            } else if (selectedHP === '3') {
+                price = 33000;
+            }
+            
+            priceElement.textContent = `₱ ${price.toFixed(2)}`;
+        }
+
+        // Function to get current price for cart
+        function getCurrentPrice() {
+            const hpSelect = document.getElementById('hp-select');
+            const selectedHP = hpSelect.value;
+            
+            let price = 29000; // Base price for 1 HP
+            
+            if (selectedHP === '2') {
+                price = 31000;
+            } else if (selectedHP === '3') {
+                price = 33000;
+            }
+            
+            return price;
+        }
     </script>
 
     <script src="cart.js"></script>
