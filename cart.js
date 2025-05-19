@@ -2,7 +2,7 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL
-const API_BASE_URL = 'https://final-website1.vercel.app';
+const API_BASE_URL = 'https://finalwebsite1.onrender.com';
 
 function addToCart(product) {
     event.preventDefault(); // Prevent default link behavior
