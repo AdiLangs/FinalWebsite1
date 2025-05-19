@@ -1,7 +1,6 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL for backend requests
-const API_BASE_URL = 'https://finalwebsite1.onrender.com';
 
 // Add to Cart function (modular)
 function addToCart(product) {
