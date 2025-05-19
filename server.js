@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 // Debug: Log environment variables
@@ -25,7 +26,72 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+// Order Schema
+const orderSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    items: [{
+        name: String,
+        price: Number,
+        quantity: Number,
+        image: String
+    }],
+    totalAmount: { type: Number, required: true },
+    status: { type: String, default: 'pending' },
+    createdAt: { type: Date, default: Date.now }
+});
+
 const User = mongoose.model('User', userSchema);
+const Order = mongoose.model('Order', orderSchema);
+
+// Email configuration
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+// Function to send order confirmation email
+async function sendOrderConfirmationEmail(userEmail, orderDetails) {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: userEmail,
+        subject: 'Order Confirmation - Lalamig',
+        html: `
+            <h1>Thank you for your order!</h1>
+            <h2>Order Summary:</h2>
+            <table style="width:100%; border-collapse: collapse;">
+                <tr style="background-color: #f2f2f2;">
+                    <th style="padding: 8px; border: 1px solid #ddd;">Item</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                </tr>
+                ${orderDetails.items.map(item => `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${item.name}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${item.quantity}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">₱${item.price}</td>
+                    </tr>
+                `).join('')}
+                <tr style="font-weight: bold;">
+                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Total</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.totalAmount}</td>
+                </tr>
+            </table>
+            <p>Order Date: ${new Date(orderDetails.createdAt).toLocaleString()}</p>
+            <p>Order Status: ${orderDetails.status}</p>
+            <p>Thank you for shopping with Lalamig!</p>
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Order confirmation email sent to:', userEmail);
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+}
 
 // Authentication Middleware
 const auth = async (req, res, next) => {
@@ -176,6 +242,44 @@ app.get('/api/debug/users', async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// Process Order Route
+app.post('/api/orders', auth, async (req, res) => {
+    try {
+        const { items, totalAmount } = req.body;
+        
+        // Create new order
+        const order = new Order({
+            userId: req.user._id,
+            items,
+            totalAmount
+        });
+
+        await order.save();
+
+        // Send confirmation email
+        await sendOrderConfirmationEmail(req.user.email, order);
+
+        res.status(201).json({ 
+            message: 'Order placed successfully',
+            orderId: order._id
+        });
+    } catch (error) {
+        console.error('Error processing order:', error);
+        res.status(500).json({ message: 'Error processing order', error: error.message });
+    }
+});
+
+// Get User Orders Route
+app.get('/api/orders', auth, async (req, res) => {
+    try {
+        const orders = await Order.find({ userId: req.user._id })
+            .sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching orders', error: error.message });
     }
 });
 
