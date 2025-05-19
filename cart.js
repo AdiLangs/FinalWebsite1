@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function removeFromCart(productId) {
-    event.preventDefault(); // Prevent default link behavior
     cart = cart.filter(item => item.id !== productId);
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartDisplay();
