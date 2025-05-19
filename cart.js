@@ -74,4 +74,49 @@ function updateCartDisplay() {
 }
 
 // Initialize cart display when page loads
-document.addEventListener('DOMContentLoaded', updateCartDisplay); 
+document.addEventListener('DOMContentLoaded', updateCartDisplay);
+
+async function saveOrder() {
+    if (!isAuthenticated()) {
+        alert('Please sign in to complete your order');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cartItems.length === 0) {
+        alert('Your cart is empty');
+        return;
+    }
+
+    const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+    try {
+        const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                items: cartItems,
+                totalAmount
+            })
+        });
+
+        if (response.ok) {
+            // Clear cart after successful order
+            localStorage.removeItem('cart');
+            alert('Order placed successfully!');
+            window.location.href = 'homepage.html';
+        } else {
+            throw new Error('Failed to place order');
+        }
+    } catch (error) {
+        console.error('Error saving order:', error);
+        alert('Failed to place order. Please try again.');
+    }
+}
+
+// Add event listener to checkout button
+document.querySelector('#cart-add button').addEventListener('click', saveOrder); 

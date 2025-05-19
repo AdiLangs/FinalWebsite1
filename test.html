@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #088178;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #066e67;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Database Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Server Test</h2>
+        <button onclick="testServer()">Test Server Connection</button>
+        <div id="server-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Database Test</h2>
+        <button onclick="testDatabase()">Test Database Connection</button>
+        <div id="database-result"></div>
+    </div>
+
+    <script>
+        async function testServer() {
+            const resultDiv = document.getElementById('server-result');
+            try {
+                const response = await fetch('http://localhost:3000/api/test');
+                const data = await response.json();
+                resultDiv.innerHTML = `
+                    <p class="success">✓ Server is running!</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">✗ Server test failed</p>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        async function testDatabase() {
+            const resultDiv = document.getElementById('database-result');
+            try {
+                const response = await fetch('http://localhost:3000/api/test-db');
+                const data = await response.json();
+                if (data.status === 'connected') {
+                    resultDiv.innerHTML = `
+                        <p class="success">✓ Database connection successful!</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">✗ Database connection failed</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">✗ Database test failed</p>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

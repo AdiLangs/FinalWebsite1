@@ -155,23 +155,11 @@
                 signinForm.style.display = 'none';
                 signupForm.style.display = 'block';
             } else {
-                signinForm.style.display = 'block';
+                signinForm.style.display = 'block';aaaa
                 signupForm.style.display = 'none';
             }
         }
-
-        // Handle form submissions
-        document.getElementById('signin-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add your sign in logic here
-            window.location.href = 'homepage.html';
-        });
-
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add your sign up logic here
-            window.location.href = 'homepage.html';
-        });
     </script>
+    <script src="auth.js"></script>
 </body>
 </html> 
