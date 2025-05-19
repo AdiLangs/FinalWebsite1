@@ -1,5 +1,5 @@
 // API base URL
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://lalamig.vercel.app';
 
 // Add debug logging function
 function debugLog(message, data = null) {
