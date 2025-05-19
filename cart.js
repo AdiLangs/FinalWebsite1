@@ -2,6 +2,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL for backend requests
 
+
 // Add to Cart function (modular)
 function addToCart(product) {
     // Validate product object
@@ -168,14 +169,4 @@ async function saveOrder() {
 const checkoutBtn = document.querySelector('#cart-add button');
 if (checkoutBtn) {
     checkoutBtn.addEventListener('click', saveOrder);
-}
-
-const signinForm = document.getElementById('signin-form');
-if (signinForm) {
-    signinForm.addEventListener('submit', ...);
-}
-
-const signupForm = document.getElementById('signup-form');
-if (signupForm) {
-    signupForm.addEventListener('submit', ...);
 } 
