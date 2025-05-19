@@ -1,7 +1,7 @@
+
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL for backend requests
-
 
 // Add to Cart function (modular)
 function addToCart(product) {

@@ -425,3 +425,5 @@ app.listen(PORT, () => {
 });
 
 // ... rest of your existing code ... 
+
+const API_BASE_URL = 'https://finalwebsite1.onrender.com'; 
