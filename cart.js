@@ -168,5 +168,7 @@ async function saveOrder() {
     }
 }
 
-// Add event listener to checkout button
-document.querySelector('#cart-add button').addEventListener('click', saveOrder); 
+const checkoutBtn = document.querySelector('#cart-add button');
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', saveOrder);
+} 
