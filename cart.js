@@ -1,6 +1,9 @@
 // Cart functionality
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+// API base URL
+const API_BASE_URL = 'https://final-website1.vercel.app';
+
 function addToCart(product) {
     event.preventDefault(); // Prevent default link behavior
     const existingItem = cart.find(item => item.id === product.id);
@@ -117,7 +120,7 @@ async function saveOrder() {
         }));
 
         console.log('Sending order to server...');
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch(`${API_BASE_URL}/api/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

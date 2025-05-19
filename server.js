@@ -14,7 +14,25 @@ console.log('Port:', process.env.PORT);
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins temporarily for testing
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
+
+// Add request logging middleware
+app.use((req, res, next) => {
+    console.log('Incoming request:', {
+        method: req.method,
+        path: req.path,
+        headers: req.headers,
+        body: req.body,
+        origin: req.headers.origin
+    });
+    next();
+});
+
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -138,31 +156,58 @@ const auth = async (req, res, next) => {
 // Register Route
 app.post('/api/register', async (req, res) => {
     try {
+        console.log('Registration attempt received:', {
+            body: req.body,
+            headers: req.headers,
+            origin: req.headers.origin
+        });
+
         const { name, email, password } = req.body;
 
+        if (!name || !email || !password) {
+            console.log('Registration failed: Missing required fields');
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
         // Check if user already exists
+        console.log('Checking for existing user with email:', email);
         const existingUser = await User.findOne({ email });
         if (existingUser) {
+            console.log('Registration failed: Email already registered');
             return res.status(400).json({ message: 'Email already registered' });
         }
 
         // Hash password
+        console.log('Hashing password for new user');
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create new user
+        console.log('Creating new user document');
         const user = new User({
             name,
             email,
             password: hashedPassword
         });
 
+        console.log('Saving new user to database');
         await user.save();
+        console.log('User saved successfully:', { userId: user._id, email: user.email });
 
         // Generate token
+        console.log('Generating JWT token');
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-        res.status(201).json({ message: 'User registered successfully', token });
+        console.log('Registration successful, sending response');
+        res.status(201).json({ 
+            message: 'User registered successfully', 
+            token,
+            user: {
+                name: user.name,
+                email: user.email
+            }
+        });
     } catch (error) {
+        console.error('Registration error:', error);
         res.status(500).json({ message: 'Error registering user', error: error.message });
     }
 });
@@ -329,6 +374,16 @@ app.get('/api/orders', auth, async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error fetching orders', error: error.message });
     }
+});
+
+// Add error handling middleware at the end of the file, before app.listen
+app.use((err, req, res, next) => {
+    console.error('Global error handler caught:', err);
+    res.status(500).json({
+        message: 'Internal server error',
+        error: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
 });
 
 // MongoDB Connection with better error handling

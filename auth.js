@@ -1,69 +1,90 @@
+// API base URL
+const API_BASE_URL = 'https://final-website1.vercel.app';
+
+// Add debug logging function
+function debugLog(message, data = null) {
+    console.log(`[Auth Debug] ${message}`, data || '');
+}
+
 // Check if user is already logged in
 async function checkAuth() {
+    debugLog('Checking authentication status');
     const token = localStorage.getItem('token');
     if (token) {
         try {
-            const response = await fetch('http://localhost:3000/api/verify', {
+            debugLog('Found token, verifying with server');
+            const response = await fetch(`${API_BASE_URL}/api/verify`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             
+            debugLog('Server response:', response);
             if (response.ok) {
-                // User is authenticated, redirect to homepage
+                debugLog('Token valid, redirecting to homepage');
                 window.location.href = 'homepage.html';
             } else {
-                // Token is invalid, remove it
+                debugLog('Token invalid, removing from storage');
                 localStorage.removeItem('token');
             }
         } catch (error) {
-            console.error('Auth check error:', error);
+            debugLog('Auth check error:', error);
             localStorage.removeItem('token');
         }
+    } else {
+        debugLog('No token found');
     }
 }
 
 // Authentication functions
 async function register(name, email, password) {
+    debugLog('Attempting registration:', { name, email });
     try {
-        const response = await fetch('http://localhost:3000/api/register', {
+        const response = await fetch(`${API_BASE_URL}/api/register`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({ name, email, password })
         });
 
+        debugLog('Registration response:', response);
         const data = await response.json();
+        debugLog('Registration data:', data);
+
         if (response.ok) {
+            debugLog('Registration successful, storing token');
             localStorage.setItem('token', data.token);
             return true;
         } else {
             throw new Error(data.message || 'Registration failed');
         }
     } catch (error) {
-        console.error('Registration error:', error);
+        debugLog('Registration error:', error);
         throw error;
     }
 }
 
 async function login(email, password) {
+    debugLog('Attempting login:', { email });
     try {
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
 
-        console.log('Attempting login for:', email);
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch(`${API_BASE_URL}/api/login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({ email, password })
         });
 
+        debugLog('Login response:', response);
         const data = await response.json();
-        console.log('Server response:', data);
+        debugLog('Login data:', data);
 
         if (!response.ok) {
             throw new Error(data.message || 'Login failed');
@@ -77,12 +98,12 @@ async function login(email, password) {
             throw new Error('Invalid server response: No user data received');
         }
 
+        debugLog('Login successful, storing data');
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        console.log('Login successful for:', data.user.email);
         return true;
     } catch (error) {
-        console.error('Login error:', error);
+        debugLog('Login error:', error);
         throw error;
     }
 }
