@@ -73,21 +73,27 @@
         <p>Best Aircons for the hot weather</p>
         <div class="pro-container">
             <div class="pro">
-                <img src="img/products/f1.jpg" alt="">
-                <div class="des">
-                    <span>brand</span>
-                    <h5>Summary</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                <div class="product-content" onclick="window.location.href='sproduct.html'">
+                    <img src="img/products/f1.jpg" alt="">
+                    <div class="des">
+                        <span>brand</span>
+                        <h5>Summary</h5>
+                        <div class="star">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h4>₱ 20,000.00</h4>
                     </div>
-                    <h4>Price</h4>
                 </div>
-                <a href="#"><i class="fal fa-shopping-cart cart"></i></a>
-
+                <a href="#" onclick="addToCart({
+                    id: 'product1',
+                    name: 'Summary',
+                    price: 20000.00,
+                    image: 'img/products/f1.jpg'
+                })"><i class="fal fa-shopping-cart cart"></i></a>
             </div>
             <div class="pro">
                 <img src="img/products/f1.jpg" alt="">
@@ -313,7 +319,7 @@
     </footer>
 
 
-
+    <script src="cart.js"></script>
     <script src="script.js"></script>
 </body>
 

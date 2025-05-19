@@ -691,9 +691,13 @@ footer .copyright{
     font-size: 13xp;
 }
 
+.product-content {
+    cursor: pointer;
+}
 
-
-
+.product-content:hover {
+    opacity: 0.9;
+}
 
 @media (max-width: 1000px) {
     .section-p1{
