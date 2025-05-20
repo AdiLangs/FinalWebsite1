@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lalamig Website</title>
+    <title>Lalamig Website - Product Details</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
     <link rel="stylesheet" href="style.css">
     
@@ -35,127 +35,44 @@
 
     <section id="prodetails" class="section-p1">
         <div class="single-pro-image">
-            <img src="img/aircon/ac1.png" width="668px" height="668px" id="MainImg" alt="">
+            <img src="" width="668px" height="668px" id="MainImg" alt="">
             <div class="small-image-group">
                 <div class="small-image-col">
-                    <img src="img/aircon/ac1.2.png" width="150px" height="150px" class="small-image" alt="" >
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/aircon/ac1.4.png" width="150px" height="150px" class="small-image" alt="" >
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/aircon/ac1.3.png" width="150px" height="150px" class="small-image" alt="" >
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
                 </div>
                 <div class="small-image-col">
-                    <img src="img/aircon/ac1.4.png" width="150px" height="150px" class="small-image" alt="" >
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
                 </div>
             </div>
         </div>
         <div class="single-pro-details">
-            <h6>Home / Aircon</h6>
-            <h4>INVERTER AIRCON WALL-TYPE UNIT R32</h4>
-            <h2 id="product-price">₱ 29,000.00</h2>
-            <select id="hp-select" onchange="updatePrice()">
-                <option value="1">1 hp</option>
-                <option value="2">2 hp</option>
-                <option value="3">3 hp</option>
+            <h6 id="product-category">Home / Product</h6>
+            <h4 id="product-title">Product Title</h4>
+            <h2 id="product-price">₱ 0.00</h2>
+            <select id="variant-select" onchange="updatePrice()">
+                <!-- Variants will be populated by JavaScript if available -->
             </select>
             <input type="number" value="1" id="quantity" min="1">
-            <button class="normal" onclick="addToCart({
-                id: 'product1-' + document.getElementById('hp-select').value,
-                name: 'Product Name (' + document.getElementById('hp-select').value + ' HP)',
-                price: getCurrentPrice(),
-                image: 'img/aircon/ac1.png',
-                quantity: parseInt(document.getElementById('quantity').value) || 1
-            })">Add to Cart</button>
+            <button class="normal" onclick="addToCartHandler()">Add to Cart</button>
             <h4>Product Details</h4>
-            <span><li>INCLUDED</li>
-            <li>FREE 10 FEET COPPER TUBE</li>
-            <li>FREE 10 FEET COMMUNICATION WIRE</li>
-            <li>FREE 1 PC. PVC DRAIN</li>
-            <li>METAL SUPPORT BRACKETOUTDOOR STAND</li>    
+            <span id="product-details">
+                <!-- Product details will be populated by JavaScript -->
             </span>
         </div>
-
     </section>
 
-        <section id="product1" class="section-p1">
-        <h2>Featured Products</h2>
-        <p>Best Aircons for the hot weather</p>
+    <section id="product1" class="section-p1">
+        <h2>Other Products</h2>
+        <p>Explore our other products</p>
         <div class="pro-container">
-            <div class="pro">
-                <img src="img/products/f1.jpg" alt="">
-                <div class="des">
-                    <span>brand</span>
-                    <h5>Summary</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Price</h4>
-                </div>
-                <a href="#"><i class="fal fa-shopping-cart cart"></i></a>
-
-            </div>
-            <div class="pro">
-                <img src="img/products/f1.jpg" alt="">
-                <div class="des">
-                    <span>brand</span>
-                    <h5>Summary</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Price</h4>
-                </div>
-                <a href="#"><i class="fal fa-shopping-cart cart"></i></a>
-
-            </div>
-            <div class="pro">
-                <img src="img/products/f1.jpg" alt="">
-                <div class="des">
-                    <span>brand</span>
-                    <h5>Summary</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Price</h4>
-                </div>
-                <a href="#"><i class="fal fa-shopping-cart cart"></i></a>
-
-            </div>
-            <div class="pro">
-                <img src="img/products/f1.jpg" alt="">
-                <div class="des">
-                    <span>brand</span>
-                    <h5>Summary</h5>
-                    <div class="star">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4>Price</h4>
-                </div>
-                <a href="#"><i class="fal fa-shopping-cart cart"></i></a>
-
-            </div>
-            
-            
-
+            <!-- Other products will be populated by JavaScript -->
         </div>
-
     </section>
 
     <section id="newsletter" class="section-p1 section-m1">
@@ -169,40 +86,33 @@
         </div>
     </section>
 
-
-
     <footer class="section-p1">
         <div class="col">
             <h4>Contacts</h4>
-            <p><strong>Email:</strong> 123 Street, City, Country</p>
-            <p><strong>Address:</strong> 123 Street, City, Country</p>
-            <p><strong>Phone:</strong> +123 456 7890</p>
-            <p><strong>Hours:</strong> 10:00 - 18:00, Mon - Sat</p>
+            <p><strong>Email:</strong> Lalamigaircon@gmail.com</p>
+            <p><strong>Address:</strong> 17 B De Guzman St. Marulas, Valenzuela, Philippines</p>
+            <p><strong>Phone:</strong> 
+                0912 369 3351</p>
+            <p><strong>Hours:</strong> Always Open</p>
             <div class="follow">
                 <h4>Follow Us</h4>
                 <div class="icon">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-pinterest"></i>
-                    <i class="fab fa-youtube"></i>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-facebook-f" ></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-youtube"></i></a>
                 </div>
         </div>
     </div>
 
     <div class="col">
             <h4>About</h4>
-            <a href="#">About Us</a>
-            <a href="#">Delivery Information</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
+            <a href="contact.html">About Us</a>
     </div>
     <div class="col">
             <h4>My Account</h4>
-            <a href="#">Sign In</a>
-            <a href="#">View Cart</a>
-            <a href="#">My Wishlist</a>
-            <a href="#">Track My Order</a>
+            <a href="index.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
     </div>
 
     <div class="col install">
@@ -222,6 +132,232 @@
     </footer>
 
     <script>
+        // Product data
+        const products = {
+            product1: {
+                title: "INVERTER AIRCON WALL-TYPE UNIT R32",
+                brand: "OX",
+                category: "Home / Aircon",
+                basePrice: 29000,
+                images: {
+                    main: "img/aircon/ac1.png",
+                    gallery: [
+                        "img/aircon/ac1.png",
+                        "img/aircon/ac1.2.png",
+                        "img/aircon/ac1.3.png",
+                        "img/aircon/ac1.4.png"
+                    ]
+                },
+                details: [
+                    "INCLUDED",
+                    "FREE 10 FEET COPPER TUBE",
+                    "FREE 10 FEET COMMUNICATION WIRE",
+                    "FREE 1 PC. PVC DRAIN",
+                    "METAL SUPPORT BRACKETOUTDOOR STAND"
+                ],
+                variants: [
+                    { label: "1 HP", price: 29000 },
+                    { label: "2 HP", price: 31000 },
+                    { label: "3 HP", price: 35000 }
+                ]
+            },
+            product2: {
+                title: "AR12TYHYEWKNTC",
+                brand: "Samsung",
+                category: "Home / Aircon",
+                basePrice: 25000,
+                images: {
+                    main: "img/products/prod2.1.png",
+                    gallery: [
+                        "img/products/prod2.1.png",
+                        "img/products/prod2.2.png",
+                        "img/products/prod2.3.png",
+                        "img/products/prod2.4.png"
+                    ]
+                },
+                details: [
+                    "Samsung AR12TYHYEWKNTC",
+                    "Wind-Free™ Cooling",
+                    "Digital Inverter Boost",
+                    "Tri-Care Filter",
+                    "AI Auto Cooling"
+                ],
+                variants: [
+                    { label: "1.0 HP", price: 25000 },
+                    { label: "1.5 HP", price: 27000 },
+                    { label: "2.0 HP", price: 30000 }
+                ]
+            },
+            product3: {
+                title: "WAR-632IGT2",
+                brand: "Fujidenzo ",
+                category: "Home / Aircon",
+                basePrice: 10000,
+                images: {
+                    main: "img/products/prod3.png",
+                    gallery: [
+                        "img/products/prod3.1.png",
+                        "img/products/prod3.2.png",
+                        "img/products/prod3.3.png",
+                        "img/products/prod3.4.png"
+                    ]
+                },
+                details: [
+                    "Inverter Grade – R32 Refrigerant",
+                    "High EER",
+                    "Gold Fin Condenser",
+                    "Dehumidifier"
+                ],
+                variants: [
+                    { label: "0.6 HP", price: 10000 },
+                    { label: "0.8 HP", price: 12500 }
+                ]
+            },
+            product4: {
+                title: "TCL-60MA ",
+                brand: "Astron",
+                category: "Home / Aircon",
+                basePrice: 6000,
+                images: {
+                    main: "img/products/prod4.png",
+                    gallery: [
+                        "img/products/prod4.1.png",
+                        "img/products/prod4.2.png",
+                        "img/products/prod4.3.png",
+                        "img/products/prod4.4.png"
+                    ]
+                },
+                details: [
+                    "built-in air filter ",
+                    "Anti-rust and anti-corrosion body",
+                    "Cooling Capacity: 5,760kJ / hr | Rated Voltage: 230V / 60Hz | Power input: 580W",
+                    "Astron TCL-60MA 0.6HP window-type aircon"
+                ],
+                variants: [
+                    { label: "0.6 HP", price: 6000 },
+                    { label: "0.7 HP", price: 7500 }
+                ]
+            }
+        };
+
+        // Get product type from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productType = urlParams.get('product');
+
+        // Update page content based on product type
+        function updateProductDetails() {
+            if (!productType || !products[productType]) {
+                window.location.href = 'shop.HTML';
+                return;
+            }
+
+            const product = products[productType];
+            // Update title, price, category
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-category').textContent = product.category;
+            document.getElementById('product-price').textContent = `₱ ${product.basePrice.toLocaleString()}.00`;
+
+            // Update images
+            document.getElementById('MainImg').src = product.images.main;
+            const smallImages = document.getElementsByClassName('small-image');
+            product.images.gallery.forEach((img, index) => {
+                if (smallImages[index]) {
+                    smallImages[index].src = img;
+                }
+            });
+
+            // Update product details
+            const detailsList = document.getElementById('product-details');
+            detailsList.innerHTML = product.details.map(detail => `<li>${detail}</li>`).join('');
+
+            // Update variants
+            const variantSelect = document.getElementById('variant-select');
+            variantSelect.innerHTML = '';
+            if (product.variants && product.variants.length > 0) {
+                product.variants.forEach((variant, idx) => {
+                    const option = document.createElement('option');
+                    option.value = idx;
+                    option.textContent = variant.label;
+                    variantSelect.appendChild(option);
+                });
+                variantSelect.style.display = '';
+            } else {
+                variantSelect.style.display = 'none';
+            }
+
+            // Update other products section
+            updateOtherProducts();
+        }
+
+        // Update price based on variant selection
+        function updatePrice() {
+            const variantSelect = document.getElementById('variant-select');
+            const priceElement = document.getElementById('product-price');
+            const selectedIdx = parseInt(variantSelect.value) || 0;
+            const product = products[productType];
+            let price = product.basePrice;
+            if (product.variants && product.variants[selectedIdx]) {
+                price = product.variants[selectedIdx].price;
+            }
+            priceElement.textContent = `₱ ${price.toLocaleString()}.00`;
+        }
+
+        // Add to cart handler
+        function addToCartHandler() {
+            const variantSelect = document.getElementById('variant-select');
+            const quantity = document.getElementById('quantity').value;
+            const product = products[productType];
+            let price = product.basePrice;
+            let variantLabel = '';
+            if (product.variants && product.variants[variantSelect.value]) {
+                price = product.variants[variantSelect.value].price;
+                variantLabel = product.variants[variantSelect.value].label;
+            }
+            const productData = {
+                id: `${productType}-${variantLabel}`,
+                name: `${product.title} (${variantLabel})`,
+                price: price,
+                image: product.images.main,
+                quantity: parseInt(quantity) || 1
+            };
+            addToCart(productData);
+        }
+
+        // Update other products section
+        function updateOtherProducts() {
+            const container = document.querySelector('.pro-container');
+            container.innerHTML = '';
+            Object.entries(products).forEach(([type, product]) => {
+                if (type !== productType) {
+                    const productElement = document.createElement('div');
+                    productElement.className = 'pro';
+                    productElement.innerHTML = `
+                        <div class="product-content" onclick="window.location.href='sproduct.html?product=${type}'">
+                            <img src="${product.images.main}" alt="">
+                            <div class="des">
+                                <span>${product.brand}</span>
+                                <h5>${product.title}</h5>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>₱ ${product.basePrice.toLocaleString()}.00</h4>
+                            </div>
+                        </div>
+                        <a href="#" class="add-to-cart-btn"
+                           data-product='{"id":"${type}","name":"${product.title}","price":${product.basePrice},"image":"${product.images.main}","quantity":1}'>
+                           <i class="fal fa-shopping-cart cart"></i>
+                        </a>
+                    `;
+                    container.appendChild(productElement);
+                }
+            });
+        }
+
+        // Image gallery functionality
         var MainImg = document.getElementById("MainImg");
         var smallimg = document.getElementsByClassName("small-image");
         smallimg[0].onclick = function(){
@@ -237,47 +373,11 @@
             MainImg.src = smallimg[3].src;
         }
 
-        // Function to update price based on HP selection
-        function updatePrice() {
-            const hpSelect = document.getElementById('hp-select');
-            const priceElement = document.getElementById('product-price');
-            const selectedHP = hpSelect.value;
-            
-            let price = 29000; // Base price for 1 HP
-            
-            if (selectedHP === '2') {
-                price = 31000;
-            } else if (selectedHP === '3') {
-                price = 33000;
-            }
-            
-            priceElement.textContent = `₱ ${price.toFixed(2)}`;
-        }
-
-        // Function to get current price for cart
-        function getCurrentPrice() {
-            const hpSelect = document.getElementById('hp-select');
-            const selectedHP = hpSelect.value;
-            
-            let price = 29000; // Base price for 1 HP
-            
-            if (selectedHP === '2') {
-                price = 31000;
-            } else if (selectedHP === '3') {
-                price = 33000;
-            }
-            
-            return price;
-        }
+        // Initialize page
+        updateProductDetails();
     </script>
-
+    <script src="auth.js"></script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
 </body>
-
-
-
-
-
-
 </html>

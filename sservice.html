@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lalamig Website - Service Details</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+
+    <section id="header">
+        <a href="homepage.html" ><img src="logo.png" class="logo" alt="" height="50px"></a>
+
+        <div>
+            <ul id="navbar">
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="shop.HTML">Shop</a></li>
+            <li><a class="active" href="services.HTML">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li id="lgbag"><a href="cart.html" i class="far fa-shopping-bag"></i></a></li>
+            <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+
+    </section>
+
+    <section id="prodetails" class="section-p1">
+        <div class="single-pro-image">
+            <img src="" width="668px" height="668px" id="MainImg" alt="">
+            <div class="small-image-group">
+                <div class="small-image-col">
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
+                </div>
+                <div class="small-image-col">
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
+                </div>
+                <div class="small-image-col">
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
+                </div>
+                <div class="small-image-col">
+                    <img src="" width="150px" height="150px" class="small-image" alt="" >
+                </div>
+            </div>
+        </div>
+        <div class="single-pro-details">
+            <h6>Home / Services</h6>
+            <h4 id="service-title">Service Title</h4>
+            <h2 id="service-price">₱ 0.00</h2>
+            <select id="service-type" onchange="updatePrice()">
+                <option value="basic">Basic Service</option>
+                <option value="premium">Premium Service</option>
+                <option value="deluxe">Deluxe Service</option>
+            </select>
+            <input type="number" value="1" id="quantity" min="1">
+            <button class="normal" onclick="bookService()">Book Service</button>
+            <h4>Service Details</h4>
+            <span id="service-details">
+                <!-- Service details will be populated by JavaScript -->
+            </span>
+        </div>
+    </section>
+
+    <section id="product1" class="section-p1">
+        <h2>Other Services</h2>
+        <p>Explore our other professional services</p>
+        <div class="pro-container">
+            <!-- Other services will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get E-mail updates about our latest services and <span>special offers</span>.</p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your email address">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <h4>Contacts</h4>
+            <p><strong>Email:</strong> Lalamigaircon@gmail.com</p>
+            <p><strong>Address:</strong> 17 B De Guzman St. Marulas, Valenzuela, Philippines</p>
+            <p><strong>Phone:</strong> 
+                0912 369 3351</p>
+            <p><strong>Hours:</strong> Always Open</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-facebook-f" ></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100091645641322"><i class="fab fa-youtube"></i></a>
+                </div>
+        </div>
+    </div>
+
+    <div class="col">
+            <h4>About</h4>
+            <a href="contact.html">About Us</a>
+    </div>
+    <div class="col">
+            <h4>My Account</h4>
+            <a href="index.html">Sign In</a>
+            <a href="cart.html">View Cart</a>
+    </div>
+
+    <div class="col install">
+            <h4>Install App</h4>
+            <p>From App Store or Google Play</p>
+            <div class="row">
+                <img src="img/pay/app.jpg" alt="">
+                <img src="img/pay/play.jpg" alt="">
+            </div>
+            <p>Secured Payment Gateways</p>
+            <img src="img/pay/pay.png" alt="">
+        </div>
+
+        <div class="copyright">
+            <p>© 2023, Lalamig Aircon. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Service data
+        const services = {
+            installation: {
+                title: "Aircon Installation Service",
+                basePrice: 6000,
+                images: {
+                    main: "img/airinstall.jpg",
+                    gallery: [
+                        "img/install.jpg",
+                        "img/install1.jpg",
+                        "img/install2.jpg",
+                        "img/install3.jpg"
+                    ]
+                },
+                details: [
+                    "Professional Installation by Certified Technicians",
+                    "FREE Basic Tools and Materials",
+                    "FREE Initial Testing and Calibration",
+                    "FREE Basic Maintenance Tips",
+                    "1 Month Service Warranty"
+                ],
+                premiumPrice: 8000,
+                deluxePrice: 10000
+            },
+            repair: {
+                title: "Aircon Repair Service",
+                basePrice: 2500,
+                images: {
+                    main: "img/repair.jpg",
+                    gallery: [
+                        "img/repair1.jpg",
+                        "img/repair2.jpg",
+                        "img/repair3.jpg",
+                        "img/repair4.jpg"
+                    ]
+                },
+                details: [
+                    "Professional Diagnosis and Repair",
+                    "Parts Replacement (if needed)",
+                    "System Testing and Calibration",
+                    "30 Days Service Warranty",
+                    "Free Basic Maintenance Tips"
+                ],
+                premiumPrice: 3500,
+                deluxePrice: 4500
+            },
+            maintenance: {
+                title: "Regular Maintenance Service",
+                basePrice: 1500,
+                images: {
+                    main: "img/regularmain.jpg",
+                    gallery: [
+                        "img/clean1.jpg",
+                        "img/clean2.jpg",
+                        "img/clean3.jpg",
+                        "img/clean4.jpg"
+                    ]
+                },
+                details: [
+                    "Regular System Check-up",
+                    "Filter Cleaning and Replacement",
+                    "Performance Optimization",
+                    "3 Months Service Warranty",
+                    "Maintenance Schedule Planning"
+                ],
+                premiumPrice: 2500,
+                deluxePrice: 3500
+            },
+            cleaning: {
+                title: "Freon Charging Service",
+                basePrice: 2000,
+                images: {
+                    main: "img/freoncharge.jpg",
+                    gallery: [
+                        "img/freoncharge.jpg",
+                        "img/freoncharge.jpg",
+                        "img/freoncharge.jpg",
+                        "img/freoncharge.jpg"
+                    ]
+                },
+                details: [
+                    "Complete System Deep Cleaning",
+                    "Mold and Bacteria Removal",
+                    "Duct Cleaning",
+                    "Deodorizing Treatment",
+                    "6 Months Service Warranty"
+                ],
+                premiumPrice: 3000,
+                deluxePrice: 4000
+            },
+            consultation: {
+                title: "Technical Consultation Service",
+                basePrice: 1000,
+                images: {
+                    main: "img/techcons.jpg",
+                    gallery: [
+                        "img/techcons.jpg",
+                        "img/techcons.jpg",
+                        "img/techcons.jpg",
+                        "img/techcons.jpg"
+                    ]
+                },
+                details: [
+                    "Expert Technical Assessment",
+                    "System Upgrade Recommendations",
+                    "Energy Efficiency Analysis",
+                    "Written Report and Recommendations",
+                    "Follow-up Support"
+                ],
+                premiumPrice: 2000,
+                deluxePrice: 3000
+            }
+        };
+
+        // Get service type from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceType = urlParams.get('service');
+
+        // Update page content based on service type
+        function updateServiceDetails() {
+            if (!serviceType || !services[serviceType]) {
+                window.location.href = 'services.html';
+                return;
+            }
+
+            const service = services[serviceType];
+            
+            // Update title and price
+            document.getElementById('service-title').textContent = service.title;
+            document.getElementById('service-price').textContent = `₱ ${service.basePrice.toLocaleString()}.00`;
+            
+            // Update images
+            document.getElementById('MainImg').src = service.images.main;
+            const smallImages = document.getElementsByClassName('small-image');
+            service.images.gallery.forEach((img, index) => {
+                if (smallImages[index]) {
+                    smallImages[index].src = img;
+                }
+            });
+
+            // Update service details
+            const detailsList = document.getElementById('service-details');
+            detailsList.innerHTML = service.details.map(detail => `<li>${detail}</li>`).join('');
+
+            // Update other services section
+            updateOtherServices();
+        }
+
+        // Update price based on service type selection
+        function updatePrice() {
+            const serviceSelect = document.getElementById('service-type');
+            const priceElement = document.getElementById('service-price');
+            const selectedService = serviceSelect.value;
+            const service = services[serviceType];
+            
+            let price = service.basePrice;
+            if (selectedService === 'premium') {
+                price = service.premiumPrice;
+            } else if (selectedService === 'deluxe') {
+                price = service.deluxePrice;
+            }
+            
+            priceElement.textContent = `₱ ${price.toLocaleString()}.00`;
+        }
+
+        // Book service function
+        function bookService() {
+            const serviceSelect = document.getElementById('service-type');
+            const quantity = document.getElementById('quantity').value;
+            const service = services[serviceType];
+            
+            let price = service.basePrice;
+            if (serviceSelect.value === 'premium') {
+                price = service.premiumPrice;
+            } else if (serviceSelect.value === 'deluxe') {
+                price = service.deluxePrice;
+            }
+
+            const serviceData = {
+                id: `${serviceType}-${serviceSelect.value}`,
+                name: `${service.title} (${serviceSelect.value})`,
+                price: price,
+                image: service.images.main,
+                quantity: parseInt(quantity) || 1
+            };
+
+            // Add to cart or handle booking
+            addToCart(serviceData);
+        }
+
+        // Update other services section
+        function updateOtherServices() {
+            const container = document.querySelector('.pro-container');
+            container.innerHTML = '';
+
+            Object.entries(services).forEach(([type, service]) => {
+                if (type !== serviceType) {
+                    const serviceElement = document.createElement('div');
+                    serviceElement.className = 'pro';
+                    serviceElement.innerHTML = `
+                        <div class="product-content" onclick="window.location.href='sservice.html?service=${type}'">
+                            <img src="${service.images.main}" alt="">
+                            <div class="des">
+                                <span>Lalamig</span>
+                                <h5>${service.title}</h5>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4>₱ ${service.basePrice.toLocaleString()}.00</h4>
+                            </div>
+                        </div>
+                        <a href="#" class="add-to-cart-btn"
+                           data-product='{"id":"${type}","name":"${service.title}","price":${service.basePrice},"image":"${service.images.main}","quantity":1}'>
+                           <i class="fal fa-shopping-cart cart"></i>
+                        </a>
+                    `;
+                    container.appendChild(serviceElement);
+                }
+            });
+        }
+
+        // Image gallery functionality
+        var MainImg = document.getElementById("MainImg");
+        var smallimg = document.getElementsByClassName("small-image");
+        smallimg[0].onclick = function(){
+            MainImg.src = smallimg[0].src;
+        }
+        smallimg[1].onclick = function(){
+            MainImg.src = smallimg[1].src;
+        }
+        smallimg[2].onclick = function(){
+            MainImg.src = smallimg[2].src;
+        }
+        smallimg[3].onclick = function(){
+            MainImg.src = smallimg[3].src;
+        }
+
+        // Initialize page
+        updateServiceDetails();
+    </script>
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
