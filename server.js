@@ -67,6 +67,8 @@ const orderSchema = new mongoose.Schema({
         quantity: { type: Number, required: true },
         image: { type: String, required: true }
     }],
+    subtotal: { type: Number, required: true },
+    shippingFee: { type: Number, required: true },
     totalAmount: { type: Number, required: true },
     status: { type: String, default: 'pending' },
     createdAt: { type: Date, default: Date.now }
@@ -121,6 +123,14 @@ async function sendOrderConfirmationEmail(userEmail, orderDetails) {
                         <td style="padding: 8px; border: 1px solid #ddd;">₱${item.price}</td>
                     </tr>
                 `).join('')}
+                <tr>
+                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Subtotal</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.subtotal}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Shipping Fee</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.shippingFee}</td>
+                </tr>
                 <tr style="font-weight: bold;">
                     <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Total</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.totalAmount}</td>
@@ -331,16 +341,18 @@ app.get('/api/debug/users', async (req, res) => {
 app.post('/api/orders', auth, async (req, res) => {
     try {
         console.log('Received order request from user:', req.user.email);
-        const { items, totalAmount } = req.body;
+        const { items, subtotal, shippingFee, totalAmount } = req.body;
         
         if (!items || !Array.isArray(items) || items.length === 0) {
             console.error('Invalid order items:', items);
             return res.status(400).json({ message: 'Invalid order items' });
         }
 
-        if (!totalAmount || typeof totalAmount !== 'number' || totalAmount <= 0) {
-            console.error('Invalid total amount:', totalAmount);
-            return res.status(400).json({ message: 'Invalid total amount' });
+        if (!subtotal || !shippingFee || !totalAmount || 
+            typeof subtotal !== 'number' || typeof shippingFee !== 'number' || typeof totalAmount !== 'number' || 
+            totalAmount <= 0 || subtotal <= 0 || shippingFee < 0) {
+            console.error('Invalid amounts:', { subtotal, shippingFee, totalAmount });
+            return res.status(400).json({ message: 'Invalid amounts' });
         }
 
         console.log('Creating new order with items:', items);
@@ -349,6 +361,8 @@ app.post('/api/orders', auth, async (req, res) => {
         const order = new Order({
             userId: req.user._id,
             items,
+            subtotal,
+            shippingFee,
             totalAmount
         });
 

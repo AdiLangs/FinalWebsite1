@@ -1,4 +1,3 @@
-
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // API base URL for backend requests
@@ -118,8 +117,12 @@ async function saveOrder() {
         return;
     }
 
-    const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-    console.log('Attempting to save order:', { items: cartItems, totalAmount });
+    const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+    const shippingFee = Math.ceil(itemCount / 2) * 500;
+    const totalAmount = subtotal + shippingFee;
+
+    console.log('Attempting to save order:', { items: cartItems, subtotal, shippingFee, totalAmount });
 
     try {
         const token = localStorage.getItem('token');
@@ -145,6 +148,8 @@ async function saveOrder() {
             },
             body: JSON.stringify({
                 items: formattedItems,
+                subtotal,
+                shippingFee,
                 totalAmount
             })
         });
