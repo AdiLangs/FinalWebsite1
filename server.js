@@ -85,7 +85,7 @@ const Order = mongoose.model('Order', orderSchema);
 
 // Resend configuration
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SENDER_EMAIL_RESEND = 'onboarding@resend.dev'; // Replace with an email from your verified domain in Resend
+const SENDER_EMAIL_RESEND = 'shop@lalamig.shop'; // Replace with an email from your verified domain in Resend
 
 console.log(`Resend configured with sender: ${SENDER_EMAIL_RESEND}`);
 
