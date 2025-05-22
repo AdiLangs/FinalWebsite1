@@ -104,7 +104,7 @@ async function sendOrderConfirmationEmail(userEmail, orderDetails) {
     });
 
     const mailOptions = {
-        from: 'jeremyadriancachop@gmail.com',
+        from: process.env.EMAIL_USER,
         to: userEmail,
         subject: 'Order Confirmation - Lalamig',
         html: `
