@@ -3,13 +3,19 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer'); // Remove nodemailer
+// const formData = require('form-data'); // Not needed for Resend
+// const Mailgun = require('mailgun.js'); // Remove mailgun.js
+const { Resend } = require('resend'); // Import Resend
 require('dotenv').config();
 
 // Debug: Log environment variables
 console.log('MongoDB URI:', process.env.MONGODB_URI);
 console.log('JWT Secret:', process.env.JWT_SECRET);
 console.log('Port:', process.env.PORT);
+console.log('Resend API Key:', process.env.RESEND_API_KEY ? 'Set' : 'Not Set'); // Log Resend variable
+// console.log('Mailgun Domain:', process.env.MAILGUN_DOMAIN ? 'Set' : 'Not Set'); // Remove Mailgun logs
+// console.log('Mailgun API Key:', process.env.MAILGUN_API_KEY ? 'Set' : 'Not Set');
 
 const app = express();
 
@@ -77,83 +83,80 @@ const orderSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Order = mongoose.model('Order', orderSchema);
 
-// Email configuration
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+// Resend configuration
+const resend = new Resend(process.env.RESEND_API_KEY);
+const SENDER_EMAIL_RESEND = 'lalamig.shop'; // Replace with an email from your verified domain in Resend
 
-// Verify email configuration
-transporter.verify(function(error, success) {
-    if (error) {
-        console.error('Email configuration error:', error);
-    } else {
-        console.log('Email server is ready to send messages');
-    }
-});
+console.log(`Resend configured with sender: ${SENDER_EMAIL_RESEND}`);
 
 // Function to send order confirmation email
 async function sendOrderConfirmationEmail(userEmail, orderDetails) {
-    console.log('Attempting to send email to:', userEmail);
-    console.log('Email configuration:', {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS ? 'Password is set' : 'Password is missing'
-    });
+    if (!process.env.RESEND_API_KEY) {
+        console.error('Resend API Key environment variable not set. Skipping email sending.');
+        return false;
+    }
 
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: userEmail,
+    console.log('Attempting to send email to:', userEmail);
+
+    const emailHtml = `
+        <h1>Thank you for your order!</h1>
+        <h2>Order Summary:</h2>
+        <table style="width:100%; border-collapse: collapse;">
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 8px; border: 1px solid #ddd;">Item</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+            </tr>
+            ${orderDetails.items.map(item => `
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${item.name}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${item.quantity}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">₱${item.price}</td>
+                </tr>
+            `).join('')}
+            <tr>
+                <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Subtotal</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.subtotal}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Shipping Fee</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.shippingFee}</td>
+            </tr>
+            <tr style="font-weight: bold;">
+                <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Total</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.totalAmount}</td>
+            </tr>
+        </table>
+        <p>Order Date: ${new Date(orderDetails.createdAt).toLocaleString()}</p>
+        <p>Order Status: ${orderDetails.status}</p>
+        <p>Thank you for shopping with Lalamig!</p>
+    `;
+
+    const options = {
+        from: SENDER_EMAIL_RESEND, // Sender email from your verified domain in Resend
+        to: userEmail,            // Recipient email
         subject: 'Order Confirmation - Lalamig',
-        html: `
-            <h1>Thank you for your order!</h1>
-            <h2>Order Summary:</h2>
-            <table style="width:100%; border-collapse: collapse;">
-                <tr style="background-color: #f2f2f2;">
-                    <th style="padding: 8px; border: 1px solid #ddd;">Item</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
-                </tr>
-                ${orderDetails.items.map(item => `
-                    <tr>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${item.name}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${item.quantity}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">₱${item.price}</td>
-                    </tr>
-                `).join('')}
-                <tr>
-                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Subtotal</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.subtotal}</td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Shipping Fee</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.shippingFee}</td>
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="2" style="padding: 8px; border: 1px solid #ddd;">Total</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">₱${orderDetails.totalAmount}</td>
-                </tr>
-            </table>
-            <p>Order Date: ${new Date(orderDetails.createdAt).toLocaleString()}</p>
-            <p>Order Status: ${orderDetails.status}</p>
-            <p>Thank you for shopping with Lalamig!</p>
-        `
+        html: emailHtml,
     };
 
     try {
         console.log('Sending email with options:', {
-            from: mailOptions.from,
-            to: mailOptions.to,
-            subject: mailOptions.subject
+            from: options.from,
+            to: options.to,
+            subject: options.subject
         });
-        
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully:', info.response);
+
+        const { data, error } = await resend.emails.send(options);
+
+        if (error) {
+            console.error('Error sending email with Resend:', error);
+            throw error;
+        }
+
+        console.log('Email sent successfully:', data);
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending email with Resend:', error);
         throw error;
     }
 }
@@ -437,7 +440,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-// ... rest of your existing code ... 
 
 const API_BASE_URL = 'https://finalwebsite1.onrender.com'; 
